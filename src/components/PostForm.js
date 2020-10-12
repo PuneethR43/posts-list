@@ -2,13 +2,16 @@ import React from 'react'
 import {connect} from 'react-redux'
 
 import {setPost} from '../actions/postsActions'
+import Alert from './Alert'
 
 class PostForm extends React.Component {
     constructor(){
         super()
         this.state = {
             title : '',
-            body : ''
+            body : '',
+            titleStatus : false,
+            bodyStatus : false 
         }
     }
     
@@ -20,12 +23,19 @@ class PostForm extends React.Component {
 
     handleSubmit = (e) => {
         e.preventDefault()
+        
+        
+
         const formData = {
             title : this.state.title,
             body : this.state.body
         }
-        this.props.dispatch(setPost(formData))
-        this.props.history.push("/")
+        this.state.title.length === 0 ? this.setState({ titleStatus: true }) : this.setState({ titleStatus: false })
+		this.state.body.length === 0 ? this.setState({ bodyStatus: true }) : this.setState({ bodyStatus: false })
+        if(this.state.title.length && this.state.body.length > 0){
+            this.props.dispatch(setPost(formData))
+            this.props.history.push("/")
+        }
     }
 
     render(){
@@ -41,8 +51,12 @@ class PostForm extends React.Component {
                             onChange={this.handleChange}
                             placeholder = "Give a Title"
                             className = "input"
-                            required
+                            style={{
+								border: this.state.titleStatus && '1px solid red',
+							}}
+
                         />
+                        {this.state.titleStatus ? <Alert/>:''}
 
                         <h3>Body</h3>
                         <textarea
@@ -51,9 +65,13 @@ class PostForm extends React.Component {
                             value = {this.state.body} 
                             onChange={this.handleChange}
                             className="textarea"
-                            style={{left:"400px"}}
-                            required
+                            style={{
+                                left:"400px",
+                                border: this.state.bodyStatus && '1px solid red'
+                            }}
+                            
                         />
+                        {this.state.bodyStatus ? <Alert/>:''}
                         </div> <br/>
 
                         <input type="submit" value="Publish" className="button"/>
