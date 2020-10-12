@@ -31,8 +31,9 @@ class PostForm extends React.Component {
             body : this.state.body
         }
         this.state.title.length === 0 ? this.setState({ titleStatus: true }) : this.setState({ titleStatus: false })
-		this.state.body.length === 0 ? this.setState({ bodyStatus: true }) : this.setState({ bodyStatus: false })
-        if(this.state.title.length && this.state.body.length > 0){
+	this.state.body.length === 0 ? this.setState({ bodyStatus: true }) : this.setState({ bodyStatus: false })
+        
+	    if(this.state.title.length && this.state.body.length > 0){
             this.props.dispatch(setPost(formData))
             this.props.history.push("/")
         }
@@ -52,8 +53,8 @@ class PostForm extends React.Component {
                             placeholder = "Give a Title"
                             className = "input"
                             style={{
-								border: this.state.titleStatus && '1px solid red',
-							}}
+				border: this.state.titleStatus && '1px solid red',
+			    }}
 
                         />
                         {this.state.titleStatus ? <Alert/>:''}
